@@ -20,14 +20,28 @@ A first ruleset for the Quickstart
   rule hello_world {
     select when echo hello
     pre {
-      name = event:attr("name").klog("our passed in Name: ");
+      name = event:attr("name").defaultsTo(ent:name, "no name passed in");
     }
     {
       send_directive("say") with
-        something = "Hello World";
+        something = "Hello #{name}";
     }
     always {
       log ("LOG says Hello " + name);
+    }
+  }
+
+  rule store_name {
+    select when name hello
+    pre {
+      passed_name = event:attr("name").klog("our passed in name: ").klog("our passed in Name: ");
+    }
+    {
+      send_directive("store_name") with
+        name = passed_name
+    }
+    always {
+      set ent:name passed_name;
     }
   }
  
