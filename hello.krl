@@ -15,6 +15,19 @@ A first ruleset for the Quickstart
       msg = "Hello " + obj
       msg
     };
+
+    users = function() {
+      users = ent:name;
+      users
+    };
+
+    name = function(id) {
+      all_users = users();
+      first_name = all_users{[id,"name","first"]}.defaultsTo("HAL","could not find user. ");
+      last_name = all_users{[id,"name","last"]}.defaultsTo("9000","could not find user. ");
+      name = first_name + " " + last_name;
+      name;
+    };
  
   }
   rule hello_world {
@@ -22,15 +35,14 @@ A first ruleset for the Quickstart
     pre {
       id = event:attr("id").defaultsTo("_0","no id passed.").klog("Passed in id: ");
       name_map = ent:name.klog("The name map is: ");
-      first = ent:name{[id,"name","first"]}.klog("First retrieved: ");
-      last = ent:name{[id,"name","last"]};
+      default_name = name(id)
     }
     {
       send_directive("say") with
-        greeting = "Hello #{first} #{last}";
+        greeting = "Hello #{default_name}";
     }
     always {
-      log ("LOG says Hello " + first + " " + last);
+      log ("LOG says Hello " + default_name);
     }
   }
 
