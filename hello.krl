@@ -20,13 +20,13 @@ A first ruleset for the Quickstart
   rule hello_world {
     select when echo hello
     pre {
-      id = event:attr("id").defaultsTo("_0","no id passed.");
+      id = event:attr("id").defaultsTo("_0","no id passed.").klog("Passed in id: ");
       first = ent:name{[id,"name","first"]};
       last = ent:name{[id,"name","last"]};
     }
     {
       send_directive("say") with
-        something = "Hello #{first} #{last}";
+        greeting = "Hello #{first} #{last}";
     }
     always {
       log ("LOG says Hello " + first + " " + last);
@@ -36,7 +36,7 @@ A first ruleset for the Quickstart
   rule store_name {
     select when name hello
     pre {
-      id = event:attr("id").klog("Out passed in id: ");
+      id = event:attr("id").klog("Our passed in id: ");
       first_name = event:attr("first").klog("Passed in first name: ");
       last_name = event:attr("last").klog("Passed in last name: ");
       init = {
