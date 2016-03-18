@@ -57,8 +57,8 @@ A first ruleset for the Quickstart
     }
     always {
       set ent:name init if not ent:name{["_0"]};
-      set ent:name{[id,"name","first"]} first;
-      set ent:name{[id,"name","last"]} last;
+      set ent:name{[id,"name","first"]} first_name;
+      set ent:name{[id,"name","last"]} last_name;
     }
   }
  
