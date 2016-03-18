@@ -21,7 +21,7 @@ A first ruleset for the Quickstart
     select when echo hello
     pre {
       id = event:attr("id").defaultsTo("_0","no id passed.").klog("Passed in id: ");
-      first = ent:name{[id,"name","first"]};
+      first = ent:name{[id,"name","first"]}.klog("First retrieved: ");
       last = ent:name{[id,"name","last"]};
     }
     {
