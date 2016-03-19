@@ -1,6 +1,6 @@
 ruleset track_car_trips {
   meta {
-    name "Track Trips"
+    name "Track Trips Better"
     description << Track Trips ruleset for part 1 of the Single Pico CS 462 lab >>
     author "Matt Freeman"
     logging on
