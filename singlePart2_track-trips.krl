@@ -11,7 +11,7 @@ ruleset track_car_trips {
   }
 
   rule process_trip {
-    select when car new_trip mileage "(.*)" setting(mileage)
+    select when car new_trip mileage "(\d+)" setting(mileage)
     pre {}
     {
       send_directive("trip") with
@@ -24,7 +24,7 @@ ruleset track_car_trips {
   }
 
   rule find_long_trips {
-    select when explicit trip_processed mileage "(.*)" setting(mileage)
+    select when explicit trip_processed mileage "(\d+)" setting(mileage)
     always {
       raise explicit event "found_long_trip" if (mileage > long_trip_length)
     }
