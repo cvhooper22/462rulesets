@@ -9,13 +9,13 @@ ruleset echo {
 
   rule hello {
     select when echo hello
-    send directive("say") with
+    send_directive("say") with
       something = "Hello World"
   }
 
   rule message {
     select when echo message input "(.*)" setting(message)
-    send directive("say") with
+    send_directive("say") with
       something = message
   }
 }

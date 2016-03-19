@@ -28,14 +28,32 @@ A first ruleset for the Quickstart
       name = first_name + " " + last_name;
       name;
     };
+
+    user_by_name = function(full_name) {
+      all_users = users();
+      filtered_users = all_users.filter( function(user_id, val){
+          constructed_name = val{["name","first"]} + " " + val{["name","last"]};
+          (constructed_name eq full_name);
+        });
+      user = filtered_users.head().klog("matching user: ");
+      user
+    };
  
   }
   rule hello_world {
     select when echo hello
     pre {
-      id = event:attr("id").defaultsTo("_0","no id passed.").klog("Passed in id: ");
-      name_map = ent:name.klog("The name map is: ");
-      default_name = name(id)
+      name = event:attr("name").defaultsTo("HAL 9000","no name passed");
+      full_name = name.split(re/\s/);
+      first_name = full_name[0].klog("first name: ");
+      last_name = full_name[1].klog("last name: ");
+      matching_user = user_by_name(name).klog("user result: ");
+      user_id = matching_user.keys().head().klog("id: ");
+      new_user = {
+        "id"    : last_name.lc() + "_" + first_name.lc(),
+        "first" : first_name,
+        "last"  : last_name
+      };
     }
     {
       send_directive("say") with
@@ -43,6 +61,33 @@ A first ruleset for the Quickstart
     }
     always {
       log ("LOG says Hello " + default_name);
+    }
+  }
+
+  rule new_user {
+    select when explicit new_user
+    pre{
+      id = event:attr("id").klog("our passed in Id: ");
+      first = event:attr("first").klog("our passed in first name: ");
+      last = event:attr("last").klog("our passed in last name: ");
+      new_user = {
+          "name":{
+            "first":first,
+            "last":last
+          },
+        "visits": 1
+      };
+    }
+    {
+      send_directive("say") with
+        something = "Hello #{first} #{last}";
+      send_directive("new_user") with
+        passed_id = id and
+        passed_first = first and
+        passed_last = last;
+    }
+    always{
+      set ent:name{[id]} new_user;
     }
   }
 

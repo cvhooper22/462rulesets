@@ -9,7 +9,7 @@ ruleset track_trips {
 
   rule process_trip {
     select when echo message mileage "(.*)" setting(mileage)
-    send directive("trip") with
+    send_directive("trip") with
       trip_length = mileage
   }
 }
