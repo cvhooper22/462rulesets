@@ -24,10 +24,11 @@ ruleset track_car_trips {
   }
 
   rule find_long_trips {
-    select when explicit trip_processed mileage "(\d*)" setting(mileage)
+    select when explicit trip_processed mileage "(\d*)" setting(length)
     always {
-      raise explicit event "found_long_trip" if (mileage > long_trip_length)
-        attributes event:attrs()
+      raise explicit event "found_long_trip"
+        with mileage = length
+      if (mileage > long_trip_length);
     }
   }
 }
