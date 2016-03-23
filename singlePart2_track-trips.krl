@@ -24,7 +24,7 @@ ruleset track_car_trips {
   }
 
   rule find_long_trips {
-    select when explicit trip_processed mileage "(\d*)"
+    select when explicit trip_processed mileage "(\d*)" setting(mileage)
     always {
       raise explicit event "found_long_trip"
         attributes event:attrs()
