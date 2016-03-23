@@ -32,13 +32,13 @@
         uuid = "TRIP-" + random:uuid();
         init_all = {
           "TRIP-0": {
-            timestamp: "init",
-            mileage: "init" 
+            "timestamp": "init",
+            "mileage": "init" 
           }
         }
       }
       always {
-        log ("where did this break");
+        log ("init_all is:" + init_all);
         set ent:all_trips init if not ent:all_trips{["TRIP-0"]};
         set ent:all_trips{[uuid,"timestamp"]} now;
         set ent:all_trips{[uuid,"mileage"]} mileage;
@@ -53,8 +53,8 @@
         uuid = "LTRIP-" + random:uuid();
         init_long = {
           "LTRIP-00": {
-            timestamp: "init",
-            mileage: "init"
+            "timestamp": "init",
+            "mileage": "init"
           }
         }
       }
