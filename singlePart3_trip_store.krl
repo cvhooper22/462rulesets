@@ -34,7 +34,7 @@
         init_all = {
           "TRIP-0": {
             "timestamp": "init",
-            "mileage": "init" 
+            "mileage": 0 
           }
         }
       }
@@ -55,7 +55,7 @@
         init_long = {
           "LTRIP-00": {
             "timestamp": "init",
-            "mileage": "init"
+            "mileage": 0
           }
         }
       }
