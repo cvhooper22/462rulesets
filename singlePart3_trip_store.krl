@@ -38,7 +38,7 @@
         }
       }
       always {
-        log ("init_all is:" + init_all);
+        log ("all_trips is:" + ent:all_trips);
         set ent:all_trips init if not ent:all_trips{["TRIP-0"]};
         set ent:all_trips{[uuid,"timestamp"]} now;
         set ent:all_trips{[uuid,"mileage"]} mileage;
@@ -59,8 +59,8 @@
         }
       }
       always {
-        log ("about to try to initialize init_long");
         set ent:long_trips init_long if not ent:long_trips{["LTRIP-00"]};
+        log("long_trips: " + ent:long_trips);
         set ent:long_trips{[uuid,"timestamp"]} now;
         set ent:long_trips{[uuid,"mileage"]} mileage;
       }
