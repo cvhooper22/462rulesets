@@ -5,6 +5,24 @@ ruleset trip_store {
     author "Matt Freeman"
     logging on
     sharing on
+    provides trips, long_trips, short_trips
+  }
+  global {
+    trips = function() {
+      all_trips = ent:all_trips.pick("$..*");
+      all_trips
+    }
+
+    long_trips = function() {
+      long = ent:long_trips.pick("$..*");
+      long
+    }
+
+    short_trips = function() {
+      trips = trips();
+      short = trips.filter(function(trip){trip["mileage"] < 501 }); // 500 is a long trip
+      short
+    }
   }
 
   rule collect_trips {
