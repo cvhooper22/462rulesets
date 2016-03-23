@@ -20,7 +20,7 @@
 
       short_trips = function() {
         short = ent:all_trips.filter(function(uuid, trip){trip{["mileage"]} < 501 }); // 500 is a long trip
-        short
+        short.values()
       }
     }
 
