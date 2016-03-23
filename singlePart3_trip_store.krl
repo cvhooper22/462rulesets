@@ -9,12 +9,12 @@
     }
     global {
       trips = function() {
-        all_trips = ent:all_trips//.pick("$..*");
+        all_trips = ent:all_trips.values()//.pick("$..*");
         all_trips
       }
 
       long_trips = function() {
-        long = ent:long_trips//.pick("$..*");
+        long = ent:long_trips.values()//.pick("$..*");
         long
       }
 
