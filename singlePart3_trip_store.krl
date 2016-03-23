@@ -39,7 +39,7 @@
         }
       }
       always {
-        set ent:all_trips init if not ent:all_trips{["TRIP-0"]};
+        set ent:all_trips init_all if not ent:all_trips{["TRIP-0"]};
         set ent:all_trips{[uuid,"timestamp"]} now;
         set ent:all_trips{[uuid,"mileage"]} mileage;
       }
