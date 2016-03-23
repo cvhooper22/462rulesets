@@ -9,17 +9,17 @@
     }
     global {
       trips = function() {
-        all_trips = ent:all_trips.values()//.pick("$..*");
+        all_trips = ent:all_trips.values()
         all_trips
       }
 
       long_trips = function() {
-        long = ent:long_trips.values()//.pick("$..*");
+        long = ent:long_trips.values()
         long
       }
 
       short_trips = function() {
-        trips = trips();
+        trips = trips().klog("all_trips: ");
         short = trips.filter(function(trip){trip["mileage"] < 501 }); // 500 is a long trip
         short
       }
