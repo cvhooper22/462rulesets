@@ -1,74 +1,76 @@
-ruleset trip_store {
-  meta {
-    name "Trip Store"
-    description << Takes care of trip storate for part 3 of the Single Pico CS 462 lab >>
-    author "Matt Freeman"
-    logging on
-    sharing on
-    provides trips, long_trips, short_trips
-  }
-  global {
-    trips = function() {
-      all_trips = ent:all_trips.pick("$..*");
-      all_trips
+  ruleset trip_store {
+    meta {
+      name "Trip Store"
+      description << Takes care of trip storage for part 3 of the Single Pico CS 462 lab >>
+      author "Matt Freeman"
+      logging on
+      sharing on
+      provides trips, long_trips, short_trips
     }
+    global {
+      trips = function() {
+        all_trips = ent:all_trips.pick("$..*");
+        all_trips
+      }
 
-    long_trips = function() {
-      long = ent:long_trips.pick("$..*");
-      long
-    }
+      long_trips = function() {
+        long = ent:long_trips.pick("$..*");
+        long
+      }
 
-    short_trips = function() {
-      trips = trips();
-      short = trips.filter(function(trip){trip["mileage"] < 501 }); // 500 is a long trip
-      short
-    }
-  }
-
-  rule collect_trips {
-    select when explicit trip_processed mileage "(\d*)" setting(mileage)
-    pre {
-      now = time:now();
-      uuid = "TRIP-" + random:uuid();
-      init_all = {
-        "TRIP-0": {
-          timestamp: "init",
-          mileage: "init" 
-        }
+      short_trips = function() {
+        trips = trips();
+        short = trips.filter(function(trip){trip["mileage"] < 501 }); // 500 is a long trip
+        short
       }
     }
-    always {
-      set ent:all_trips init if not ent:all_trips{["TRIP-0"]};
-      set ent:all_trips{[uuid,"timestamp"]} now;
-      set ent:all_trips{[uuid,"mileage"]} mileage;
-    }
-    
-  }
 
-  rule collect_long_trips {
-    select when explicit found_long_trip
-    pre {
-      now = time:now();
-      uuid = "LTRIP-" + random:uuid();
-      init_long = {
-        "LTRIP-00": {
-          timestamp: "init",
-          mileage: "init"
+    rule collect_trips {
+      select when explicit trip_processed mileage "(\d*)" setting(mileage)
+      pre {
+        now = time:now();
+        uuid = "TRIP-" + random:uuid();
+        init_all = {
+          "TRIP-0": {
+            timestamp: "init",
+            mileage: "init" 
+          }
         }
       }
+      always {
+        log ("where did this break");
+        set ent:all_trips init if not ent:all_trips{["TRIP-0"]};
+        set ent:all_trips{[uuid,"timestamp"]} now;
+        set ent:all_trips{[uuid,"mileage"]} mileage;
+      }
+      
     }
-    always {
-      set ent:long_trips init_long if not ent:long_trips{["LTRIP-00"]};
-      set ent:long_trips{[uuid,"timestamp"]} now;
-      set ent:long_trips{[uuid,"mileage"]} mileage;
-    }
-  }
 
-  rule clear_trips {
-    select when car trip_reset
-    always {
-      set ent:all_trips {};
-      set ent:long_trips {};
+    rule collect_long_trips {
+      select when explicit found_long_trip
+      pre {
+        now = time:now();
+        uuid = "LTRIP-" + random:uuid();
+        init_long = {
+          "LTRIP-00": {
+            timestamp: "init",
+            mileage: "init"
+          }
+        }
+      }
+      always {
+        log ("about to try to initialize init_long");
+        set ent:long_trips init_long if not ent:long_trips{["LTRIP-00"]};
+        set ent:long_trips{[uuid,"timestamp"]} now;
+        set ent:long_trips{[uuid,"mileage"]} mileage;
+      }
+    }
+
+    rule clear_trips {
+      select when car trip_reset
+      always {
+        set ent:all_trips {};
+        set ent:long_trips {};
+      }
     }
   }
-}
