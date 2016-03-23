@@ -19,9 +19,7 @@
       }
 
       short_trips = function() {
-        trips = trips();
-        log_trips = trips.klog("all trips: ");
-        short = trips.filter(function(trip){trip["mileage"] < 501 }); // 500 is a long trip
+        short = ent:all_trips.filter(function(uuid, trip){trip["mileage"] < 501 }); // 500 is a long trip
         short
       }
     }
