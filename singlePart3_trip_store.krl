@@ -28,7 +28,7 @@
     rule collect_trips {
       select when explicit trip_processed mileage "(\d*)" setting(mileage)
       pre {
-        foo = event:attrs().klog(">>>> are there attributes? <<<<");
+        // foo = event:attrs().klog(">>>> are there attributes? <<<<");
         now = time:now();
         uuid = "TRIP-" + random:uuid();
         init_all = {
