@@ -5,7 +5,7 @@
       author "Matt Freeman"
       logging on
       sharing on
-      provides trips, long_trips, short_trips
+      provides long_trips, short_trips
     }
     global {
       trips = function() {
