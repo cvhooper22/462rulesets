@@ -4,8 +4,8 @@
       description << Takes care of trip storage for part 3 of the Single Pico CS 462 lab >>
       author "Matt Freeman"
       logging on
-      sharing on
-      provides long_trips, short_trips
+      //sharing on
+      provides trips, long_trips, short_trips
     }
     global {
       trips = function() {
