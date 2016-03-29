@@ -8,11 +8,11 @@ ruleset car_initialize {
   }
 
   rule subscribe_to_fleet {
-    select when wranglerOS init_events
+    select when wrangler init_events
     pre {
       // find parent
       parent_results = wranglerOS:parent();
-      parent = parent_results{'parent'}.klog("My Parent: ");
+      parent = parent_results{'parent'};
       parent_eci = parent[0];
       attrs = {}.put(["name"],"Fleet")
                 .put(["name_space"],"462_Multi_Picos")
@@ -24,7 +24,7 @@ ruleset car_initialize {
     }
     always {
       raise wrangler event "subscription"
-      attributes attrs;
+        attributes attrs;
     }
   }
 }
