@@ -4,6 +4,8 @@ ruleset manage_fleet {
     description << A Fleet managing set for the Multiple Pico CS 462 lab >>
     author "Matt Freeman"
     logging on
+    sharing on
+    provides vehicles
     use module b507199x5 alias wranglerOS
   }
   global {
