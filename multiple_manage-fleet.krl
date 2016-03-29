@@ -20,7 +20,7 @@ ruleset manage_fleet {
     pre {
       name = event:attr("name") || "Car-"+math:random(999);
       my_eci = meta:eci();
-      attr = {}.put(["Prototype_rids"],"b507731x3.prod;b507731x4.prod")
+      attr = {}.put(["Prototype_rids"],"b507731x3.prod;b507731x4.prod;b507731x5.prod")
                .put(["name"],name)
                .put({"fleet_channel": my_eci, "_async": 0});
     }
