@@ -20,37 +20,27 @@ ruleset manage_fleet {
     pre {
       name = event:attr("name") || "Car-"+math:random(999);
       my_eci = meta:eci();
-      attributes = {};
-      attributes.put(["Prototype_rids"],"b507731x3.prod;b507731x4.prod");
-      attributes.put(["name"],name]);
-      attributes.put({"fleet_channel": my_eci, "_async": 0});
-      // _async is supposed to make sure it is completed before proceeding
-      subscription_attributes = {}.put(["name"], name)
-                      .put(["name_space"],"462_Multiple_Picos")
-                      .put(["my_role"],"Fleet")
-                      .put(["your_role"],"Vehicle")
-                      .put(["target_eci"],my_eci.klog("target Eci: "))
-                      ;
+      attr = {}.put(["Prototype_rids"],"b507731x3.prod;b507731x4.prod")
+               .put(["name"],name)
+               .put({"fleet_channel": my_eci, "_async": 0});
     }
-    {
-      event:send({"cid":meta:eci()}, "wrangler", "child_creation")
-      with attrs = attributes.klog("attributes: ");
-    }
-    fired {
-      raise wrangler event "subscribe"
-        with namespace = common:namespace()
-          and relationship = "Vehicle-Fleet"
-          and channelName = 
+    always {
+      raise wrangler event "child_creation"
+      attributes attr.klog("child creation attributes: ");
+      log("create child for: " + child);
     }
   }
 
-  rule delete_vehicle {
-    select when car unneeded_vehicle child_pci "(.+)" setting(child_id)
-    {
-      // delete the pico
+  rule accept_child_subscription {
+    // actually accepts all subscriptions
+    select when wrangler inbound_pending_subscription_added
+    pre {
+      attributes = event:attrs().klog("subscription attrs: ");
     }
-    fired {
-      // delte the subscription
+    always {
+      raise wrangler event "pending_subscription_approval"
+        attributes attributes;
+        log ("auto acception child subscription");
     }
   }
 }
