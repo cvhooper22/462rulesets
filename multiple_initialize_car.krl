@@ -20,7 +20,7 @@ ruleset car_initialize {
                 .put(["your_role"],"fleet")
                 .put(["target_eci"],parent_eci.klog("target ECI: "))
                 .put(["channel_type"],"462_Multiple")
-                .put(["attrs"],"success");
+                .put(["attrs"], meta:eci());
     }
     always {
       raise wrangler event "subscription"

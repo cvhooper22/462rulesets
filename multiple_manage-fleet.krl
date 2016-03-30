@@ -5,8 +5,9 @@ ruleset manage_fleet {
     author "Matt Freeman"
     logging on
     sharing on
-    provides vehicles
+    provides vehicles, subscriptions
     use module b507199x5 alias wranglerOS
+    use module a169x625 alias CloudOS
   }
   global {
     vehicles = function() {
@@ -15,6 +16,12 @@ ruleset manage_fleet {
       children = wrangler_children{"children"};
       children
     };
+
+    subscriptions = function() {
+      allSubscriptions = CloudOS:getAllSubscriptions();
+      allSubscriptions
+    }
+
   }
 
   rule create_vehicle {
@@ -40,9 +47,9 @@ ruleset manage_fleet {
       attributes = event:attrs().klog("subscription attrs: ");
     }
     always {
-      raise wrangler event "pending_subscription_approval"
+      raise wrangler event 'pending_subscription_approval'
         attributes attributes;
-        log ("auto acception child subscription");
+        log("auto acception child subscription" + event:attrs());
     }
   }
 }
