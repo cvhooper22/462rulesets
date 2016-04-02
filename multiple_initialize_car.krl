@@ -11,7 +11,7 @@ ruleset car_initialize {
     select when wrangler init_events
     pre {
       // find parent
-      my_name = event:attrs("name");
+      my_name = event:attr("name");
       subscription_name = "CarToFleet:" + my_name; 
       parent_results = wranglerOS:parent();
       parent = parent_results{'parent'};
