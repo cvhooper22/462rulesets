@@ -18,8 +18,9 @@ ruleset manage_fleet {
     };
 
     subscriptions = function() {
-      allSubscriptions = CloudOS:getAllSubscriptions();
-      allSubscriptions
+      sub_results = wranglerOS:subscriptions();
+      subscriptions = sub_results{"subscriptions"};
+      subscriptions
     }
 
   }
