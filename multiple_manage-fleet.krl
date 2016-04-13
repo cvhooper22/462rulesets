@@ -64,7 +64,7 @@ ruleset manage_fleet {
       subscribed = subscriptions{"subscribed"};
       to_be_deleted = subscribed.filter(function(sub){
                                           actual_sub = sub.values().head();
-                                          actual_sub{"subscription_name"}.klog('>>>>>>>>>>>>subscription name>>>>>>>>>>>> ') eq sub_name
+                                          actual_sub{"subscription_name"} eq sub_name
                                    })
                                    .head();
       delete_me = to_be_deleted.values().head().klog(">>>>>>> to be deleted >>>>>>");
