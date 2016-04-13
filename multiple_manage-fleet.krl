@@ -61,7 +61,8 @@ ruleset manage_fleet {
       sub_name = "CarToFleet:" + name;
       subscription_results = wranglerOS:subscriptions();
       subscriptions = subscription_results{"subscriptions"};
-      to_be_deleted = subscriptions.filter(function(sub){sub.klog('subscription') eq sub_name})
+      subscribed = subscriptions{"subscribed"};
+      to_be_deleted = subscribed.filter(function(sub){sub.klog('subscription') eq sub_name})
                                    .head()
                                    .klog(">>>>>>> to be deleted >>>>>>");
       delete_eci = to_be_deleted{"event_eci"}.klog('channel eci to delete');
