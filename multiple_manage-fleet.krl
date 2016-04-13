@@ -36,7 +36,7 @@ ruleset manage_fleet {
     }
     always {
       raise wrangler event "child_creation"
-      attributes attr.klog("child creation attributes: ");
+      attributes attr.klog(">>>>>>child creation attributes>>>>>>>>>");
       log("create child for: " + child);
     }
   }
@@ -72,11 +72,11 @@ ruleset manage_fleet {
     }
     {
       event:send({"eci": delete_eci}, "wrangler", "child_deletion")
-        with attrs = attributes.klog('deletion attributes');
+        with attrs = {}.put(["eci"], delete_eci).klog('>>>>>>>>deletion attributes>>>>>>>>>>');
 
       // unsubscribe
       event:send({"cid": delete_eci}, "wrangler", "subscription_cancellation") 
-       with attrs = {}.put(["channel_name"], name).klog("attributes for unsubscription: ");
+        with attrs = {}.put(["channel_name"], name).put(["cid"], delete_eci).klog(">>>>>>>>attributes for unsubscription>>>>>>");
     }
   }
 }
