@@ -66,9 +66,9 @@ ruleset manage_fleet {
                                           actual_sub = sub.values().head();
                                           actual_sub{"subscription_name"}.klog('>>>>>>>>>>>>subscription name>>>>>>>>>>>> ') eq sub_name
                                    })
-                                   .head()
-                                   .klog(">>>>>>> to be deleted >>>>>>");
-      delete_eci = to_be_deleted{"event_eci"}.klog('channel eci to delete');
+                                   .head();
+      delete_me = to_be_deleted.values().head().klog(">>>>>>> to be deleted >>>>>>");
+      delete_eci = delete_me{"event_eci"}.klog('>>>>>>>>>channel eci to delete>>>>>>>');
     }
     {
       event:send({"eci": delete_eci}, "wrangler", "child_deletion")
