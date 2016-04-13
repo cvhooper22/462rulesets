@@ -69,14 +69,15 @@ ruleset manage_fleet {
                                    .head();
       delete_me = to_be_deleted.values().head().klog(">>>>>>> to be deleted >>>>>>");
       delete_eci = delete_me{"event_eci"}.klog('>>>>>>>>>channel eci to delete>>>>>>>');
+      delete_cid = delete_me{"back_channel"}.klog(">>>>>> back channel cid >>>>>>>>");
     }
     {
       event:send({"eci": delete_eci}, "wrangler", "child_deletion")
         with attrs = {}.put(["deletionTarget"], delete_eci).klog('>>>>>>>>deletion attributes>>>>>>>>>>');
 
       // unsubscribe
-      event:send({"cid": delete_eci}, "wrangler", "subscription_cancellation") 
-        with attrs = {}.put(["channel_name"], name).put(["cid"], delete_eci).klog(">>>>>>>>attributes for unsubscription>>>>>>");
+      event:send({"cid": delete_cid}, "wrangler", "subscription_cancellation") 
+        with attrs = {}.put(["channel_name"], name).klog(">>>>>>>>attributes for unsubscription>>>>>>");
     }
   }
 }
