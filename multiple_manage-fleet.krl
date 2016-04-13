@@ -72,7 +72,7 @@ ruleset manage_fleet {
     }
     {
       event:send({"eci": delete_eci}, "wrangler", "child_deletion")
-        with attrs = {}.put(["eci"], delete_eci).klog('>>>>>>>>deletion attributes>>>>>>>>>>');
+        with attrs = {}.put(["deletionTarget"], delete_eci).klog('>>>>>>>>deletion attributes>>>>>>>>>>');
 
       // unsubscribe
       event:send({"cid": delete_eci}, "wrangler", "subscription_cancellation") 
