@@ -53,4 +53,25 @@ ruleset manage_fleet {
         log("auto acception child subscription" + event:attrs());
     }
   }
+
+  rule delete_vehicle {
+    select when car unneeded_vehicle
+    pre {
+      name = event:attr("name").klog("name to delete: ");
+      subscription_results = wranglerOS:subscriptions();
+      subscriptions = subscription_results{"subscriptions"};
+      to_be_deleted = subscriptions.filter(function(sub){sub{"channelName"} eq name})
+                                   .head()
+                                   .klog(">>>>>>> to be deleted >>>>>>");
+      delete_eci = to_be_deleted{"eventChannel"}.klog('channel eci to delete');
+    }
+    {
+      event:send({"eci": delete_eci}, "wrangler", "child_deletion")
+        with attrs = attributes.klog('deletion attributes');
+
+      // unsubscribe
+      event:send({"cid": delete_eci}, "wrangler", "subscription_cancellation") 
+       with attrs = {}.put(["channel_name"], name).klog("attributes for unsubscription: ");
+    }
+  }
 }
