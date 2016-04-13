@@ -58,12 +58,13 @@ ruleset manage_fleet {
     select when car unneeded_vehicle
     pre {
       name = event:attr("name").klog("name to delete: ");
+      sub_name = "CarToFleet:" + name;
       subscription_results = wranglerOS:subscriptions();
       subscriptions = subscription_results{"subscriptions"};
-      to_be_deleted = subscriptions.filter(function(sub){sub{"channelName"} eq name})
+      to_be_deleted = subscriptions.filter(function(sub){sub{"subscription_name"} eq sub_name})
                                    .head()
                                    .klog(">>>>>>> to be deleted >>>>>>");
-      delete_eci = to_be_deleted{"eventChannel"}.klog('channel eci to delete');
+      delete_eci = to_be_deleted{"event_eci"}.klog('channel eci to delete');
     }
     {
       event:send({"eci": delete_eci}, "wrangler", "child_deletion")
